@@ -31,12 +31,24 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
       
+      - name: Extract metadata for the Docker Image #https://github.com/docker/metadata-action#tags-input
+        id: meta
+        uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.repository }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+
       - name: Build Image and Push to Docker Hub
         uses: docker/build-push-action@v5
         with:
           context: ./Nginx-Deployment
           file: ./Nginx-Deployment/Dockerfile
           push: true
-          tags: anoophegde1995/nginx-ubuntu:v1
+          #tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.repository }}:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           
         
