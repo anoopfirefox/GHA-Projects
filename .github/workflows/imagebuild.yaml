@@ -1,15 +1,18 @@
 name: "CI/CD for Nginx Web App using GHA"
 
-on:
-  push:
-    #branches: ["main"]
-    #paths-ignore:
-    # - "src/*"
-    tags:
-    #  - 'v1.*'
-      - 'v[0-9]+.[0-9]+.[0-9]+'
-  #pull_request:
-   # branches: ["main"] 
+on: workflow_dispatch
+ #push:
+ #  #branches: ["main"]
+ #  #paths-ignore:
+ #  # - "src/*"
+ #  tags:
+ #  #  - 'v1.*'
+ #    - 'v[0-9]+.[0-9]+.[0-9]+'
+ ##pull_request:
+ # # branches: ["main"] 
+
+env:
+  repository: nginx-ubuntu
 
 permissions:
   contents: read  
@@ -18,8 +21,8 @@ jobs:
   nginx-image-build:
     runs-on: ubuntu-latest
     environment: production
-    env:
-      repository: nginx-ubuntu
+    
+    
 
 
     steps:
