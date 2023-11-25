@@ -6,7 +6,8 @@ on:
     #paths-ignore:
     # - "src/*"
     tags:
-      - 'v1.*'  
+    #  - 'v1.*'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
   #pull_request:
    # branches: ["main"] 
 
