@@ -15,6 +15,9 @@ jobs:
   nginx-image-build:
     runs-on: ubuntu-latest
     environment: production
+    env:
+      repository: nginx-ubuntu
+
 
     steps:
       - name: checkout repository
@@ -30,14 +33,26 @@ jobs:
         
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v2
+
+      - name: Extract metadata for the Docker Image #https://github.com/docker/metadata-action#tags-input
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.repository }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+
     
       - name: Build Image and Push to Docker Hub
         uses: docker/build-push-action@v4
         with:
           context: ./Nginx-Deployment
           file: ./Nginx-Deployment/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/nginx-ubuntu:latest
-          
+          push: false
+          #tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.repository }}:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}          
           
         
