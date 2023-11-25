@@ -2,13 +2,13 @@ name: "CI/CD for Nginx Web App using GHA"
 
 on:
   push:
-    branches: ["main"]
+    #branches: ["main"]
     #paths-ignore:
     # - "src/*"
     tags:
       - 'v1.*'  
-  pull_request:
-    branches: ["main"] 
+  #pull_request:
+   # branches: ["main"] 
 
 permissions:
   contents: read  
