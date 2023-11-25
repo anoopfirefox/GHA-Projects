@@ -15,9 +15,6 @@ jobs:
   nginx-image-build:
     runs-on: ubuntu-latest
     environment: production
-    
-    
-
 
     steps:
       - name: checkout repository
@@ -30,7 +27,6 @@ jobs:
 
       - name: Extract metadata for the Docker Image #https://github.com/docker/metadata-action#tags-input
         id: meta
-        #uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         uses: docker/metadata-action@v5.0.0
         with:
           images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.repository }}
@@ -40,7 +36,7 @@ jobs:
       - name: Build Docker Image
         run: |
             docker image build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.repository }}:latest ./Nginx-Deployment/.
-            #docker image build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.repository }}:${{ steps.meta.outputs.tags }} ./Nginx-Deployment/.
+            
       
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
@@ -60,14 +56,5 @@ jobs:
       - name: Build Image and Push to Docker Hub
         run: |
           docker image push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.repository }}:latest
-        #uses: docker/build-push-action@v4
-        #with:
-          #context: ./Nginx-Deployment
-          #file: ./Nginx-Deployment/Dockerfile
-          #push: true
-          ##tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.repository }}:latest
-          #tags: ${{ steps.meta.outputs.tags }}
-          #labels: ${{ steps.meta.outputs.labels }}      
-        
           
         
