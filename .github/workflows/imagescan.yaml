@@ -40,7 +40,7 @@ jobs:
       - name: Build Docker Image
         run: |
             docker image build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.repository }}:latest ./Nginx-Deployment/.
-            docker image build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.repository }}:${{ steps.meta.outputs.tags }} ./Nginx-Deployment/.
+            #docker image build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.repository }}:${{ steps.meta.outputs.tags }} ./Nginx-Deployment/.
       
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
@@ -59,7 +59,7 @@ jobs:
     
       - name: Build Image and Push to Docker Hub
         run: |
-          docker image push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.repository }}:${{ steps.meta.outputs.tags }}
+          docker image push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.repository }}:latest
         #uses: docker/build-push-action@v4
         #with:
           #context: ./Nginx-Deployment
