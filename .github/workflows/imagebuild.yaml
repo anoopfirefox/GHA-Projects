@@ -50,7 +50,7 @@ jobs:
         with:
           context: ./Nginx-Deployment
           file: ./Nginx-Deployment/Dockerfile
-          push: false
+          push: true
           #tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.repository }}:latest
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}          
